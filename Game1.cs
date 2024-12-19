@@ -71,9 +71,9 @@ namespace Final_Project_
 
             P1BarTexture = Content.Load<Texture2D>("P1 Bar");
             P2BarTexture = Content.Load<Texture2D>("P2 Bar");
-            introBackround = Content.Load<Texture2D>("intro Backround");
-            midBackround = Content.Load<Texture2D>("mid Backround");
-            outroBackround = Content.Load<Texture2D>("outro Backround");
+            introBackround = Content.Load<Texture2D>("intro Backround (2)");
+            midBackround = Content.Load<Texture2D>("mid Background");
+            //outroBackround = Content.Load<Texture2D>("outro Backround");
         }
 
         protected override void Update(GameTime gameTime)
@@ -94,9 +94,9 @@ namespace Final_Project_
             //MID SCREEN 
             if (screen == Screen.mid)
             {
-                if (Point == 5)
+                if (screen == Screen.mid) 
                 {
-                    screen = Screen.mid;
+                    screen = Screen.Outro;
                 }
             }
 
@@ -112,10 +112,21 @@ namespace Final_Project_
 
             _spriteBatch.Draw(P1BarTexture, P1BarRect, Color.White);
             _spriteBatch.Draw(P2BarTexture, P2BarRect, Color.White);
+            //INTRO SCREEN
+            if (screen == Screen.Intro)
+            {
+                _spriteBatch.Draw(introBackround, new Vector2(0, 0), Color.White);
+            }
+            //MID SCREEN
+            if (screen == Screen.mid)
+            {
+                _spriteBatch.Draw(midBackround, new Vector2 (0,0), Color.White);
+            }
 
 
 
-            _spriteBatch.End();
+
+                _spriteBatch.End();
 
             base.Draw(gameTime);
         }
