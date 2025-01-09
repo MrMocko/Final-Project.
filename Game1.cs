@@ -34,10 +34,13 @@ namespace Final_Project_
         MouseState prevMousestate;
         MouseState mouseState;
 
-        Texture2D startButtonTexture;
-        Rectangle startButtonRect;
+        Texture2D strtButtonTexture;
+        Rectangle strtButtonRect;
 
+        Texture2D ballTexture;
+        Rectangle ballRect;
 
+        SpriteFont fadeFont;
 
 
 
@@ -59,8 +62,12 @@ namespace Final_Project_
             _graphics.PreferredBackBufferWidth = window.Width;
             _graphics.PreferredBackBufferHeight = window.Height;
             _graphics.ApplyChanges();
-            P1BarRect = new Rectangle(780, 390, 10, 120);
-            P2BarRect = new Rectangle(10, 90, 10, 120);
+
+            P1BarRect = new Rectangle(740, 340, 10, 120);
+            P2BarRect = new Rectangle(50, 150, 10, 120);
+            strtButtonRect = new Rectangle(240, 320, 320, 120);
+            ballRect = new Rectangle(240, 320, 30, 30);
+
 
             base.Initialize();
         }
@@ -73,6 +80,9 @@ namespace Final_Project_
             P2BarTexture = Content.Load<Texture2D>("P2 Bar");
             introBackround = Content.Load<Texture2D>("intro Backround (2)");
             midBackround = Content.Load<Texture2D>("mid Background");
+            strtButtonTexture = Content.Load<Texture2D>("strt Button");
+            fadeFont = Content.Load<SpriteFont>("fade Font");
+            ballTexture = Content.Load<Texture2D>("ball");
             //outroBackround = Content.Load<Texture2D>("outro Backround");
         }
 
@@ -80,47 +90,52 @@ namespace Final_Project_
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+            prevMousestate = mouseState;
+            mouseState = Mouse.GetState();
 
-            //INTRO SCREEN
-
+            // INTRO
             if (screen == Screen.Intro)
             {
-                 if (mouseState.LeftButton == ButtonState.Pressed && prevMousestate.LeftButton == ButtonState.Released) 
-                 {
-                    screen = Screen.mid;
-                 }
+                if (mouseState.LeftButton == ButtonState.Pressed && prevMousestate.LeftButton == ButtonState.Released)
+                {
+
+                    if (strtButtonRect.Contains(mouseState.Position))
+                    {
+                        screen = Screen.mid;
+
+                    }
+
+                }
+
+
+
             }
 
-            //MID SCREEN 
+            // MID SCREEN
             if (screen == Screen.mid)
             {
-                if (screen == Screen.mid) 
-                {
-                    screen = Screen.Outro;
-                }
+
             }
-
-            
-
-            base.Update(gameTime);
         }
-
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
             _spriteBatch.Begin();
 
-            _spriteBatch.Draw(P1BarTexture, P1BarRect, Color.White);
-            _spriteBatch.Draw(P2BarTexture, P2BarRect, Color.White);
             //INTRO SCREEN
             if (screen == Screen.Intro)
             {
                 _spriteBatch.Draw(introBackround, new Vector2(0, 0), Color.White);
+                _spriteBatch.Draw(strtButtonTexture, strtButtonRect, Color.White);
+                _spriteBatch.DrawString(fadeFont, "PONG", new Vector2(230, 190), Color.Red);
             }
             //MID SCREEN
             if (screen == Screen.mid)
             {
-                _spriteBatch.Draw(midBackround, new Vector2 (0,0), Color.White);
+                _spriteBatch.Draw(P2BarTexture, P2BarRect, Color.White); _spriteBatch.Draw(midBackround, new Vector2 (0,0), Color.White);
+                _spriteBatch.Draw(P1BarTexture, P1BarRect, Color.White);
+                _spriteBatch.Draw(P2BarTexture, P2BarRect, Color.White);
+                _spriteBatch.Draw(ballTexture, ballRect, Color.White);
             }
 
 

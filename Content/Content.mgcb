@@ -13,6 +13,28 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin ball.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:ball.png
+
+#begin fade Font.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:fade Font.spritefont
+
+#begin fade Font.ttf
+/copy:fade Font.ttf
+
 #begin intro Backround (2).png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -60,6 +82,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:P2 Bar.png
+
+#begin strt Button.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:strt Button.png
 
 #begin X:/My Drive/Downloads/mid Background.png
 /importer:TextureImporter
