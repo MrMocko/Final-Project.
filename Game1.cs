@@ -39,8 +39,14 @@ namespace Final_Project_
 
         Texture2D ballTexture;
         Rectangle ballRect;
+        Vector2 ballSpeed;
 
         SpriteFont fadeFont;
+
+        Rectangle p2BarLocation;
+        Rectangle p1BarLocation;
+
+        KeyboardState keyboardState;
 
 
 
@@ -67,6 +73,10 @@ namespace Final_Project_
             P2BarRect = new Rectangle(50, 150, 10, 120);
             strtButtonRect = new Rectangle(240, 320, 320, 120);
             ballRect = new Rectangle(240, 320, 30, 30);
+            p2BarLocation = new Rectangle(50, 150, 10, 120);
+            p1BarLocation = new Rectangle(740, 340, 10, 120);
+
+            ballSpeed = new Vector2(4, 8);
 
 
             base.Initialize();
@@ -80,10 +90,11 @@ namespace Final_Project_
             P2BarTexture = Content.Load<Texture2D>("P2 Bar");
             introBackround = Content.Load<Texture2D>("intro Backround (2)");
             midBackround = Content.Load<Texture2D>("mid Background");
+            outroBackround = Content.Load<Texture2D>("outro Backround");
             strtButtonTexture = Content.Load<Texture2D>("strt Button");
             fadeFont = Content.Load<SpriteFont>("fade Font");
             ballTexture = Content.Load<Texture2D>("ball");
-            //outroBackround = Content.Load<Texture2D>("outro Backround");
+            outroBackround = Content.Load<Texture2D>("outro Backround");
         }
 
         protected override void Update(GameTime gameTime)
@@ -92,6 +103,7 @@ namespace Final_Project_
                 Exit();
             prevMousestate = mouseState;
             mouseState = Mouse.GetState();
+            keyboardState = Keyboard.GetState();
 
             // INTRO
             if (screen == Screen.Intro)
@@ -111,8 +123,45 @@ namespace Final_Project_
 
             }
 
-            // MID SCREEN
-            if (screen == Screen.mid)
+            // MID
+            else if (screen == Screen.mid)
+            {
+                if (keyboardState.IsKeyDown(Keys.Up))
+                {
+                    p2BarLocation.Y -= 5;
+                }
+                if (keyboardState.IsKeyDown(Keys.Down))
+                {
+                    p2BarLocation.Y += 5;
+                }
+                if (keyboardState.IsKeyDown(Keys.W))
+                {
+                    p1BarLocation.Y -= 5;
+                }
+                if (keyboardState.IsKeyDown(Keys.S))
+                {
+                    p1BarLocation.Y += 5;
+                }
+                ballRect.X += (int)ballSpeed.X;
+                ballRect.Y += (int)ballSpeed.Y;
+                if (ballRect.Right > window.Width || ballRect.Left < 0)
+                    ballSpeed.X *= -1;
+                if (ballRect.Bottom > window.Height || ballRect.Top < 0)
+                    ballSpeed.Y *= -1;
+                if (ballRect.Intersects(P1BarRect))
+                {
+                    ballRect.X = P1BarRect.Left - ballRect.Width;
+                    ballRect.X = P1BarRect.Right;
+                    if (ballRect.Intersects(P1BarRect))
+                    {
+                        ballRect.Y = P1BarRect.Top - ballRect.Height;
+                    }
+                    ballRect.Y = P1BarRect.Bottom;
+                }
+            }
+
+            // OUTRO
+            else if (screen == Screen.Outro)
             {
 
             }
@@ -132,9 +181,9 @@ namespace Final_Project_
             //MID SCREEN
             if (screen == Screen.mid)
             {
-                _spriteBatch.Draw(P2BarTexture, P2BarRect, Color.White); _spriteBatch.Draw(midBackround, new Vector2 (0,0), Color.White);
-                _spriteBatch.Draw(P1BarTexture, P1BarRect, Color.White);
-                _spriteBatch.Draw(P2BarTexture, P2BarRect, Color.White);
+                _spriteBatch.Draw(midBackround, new Vector2 (0,0), Color.White); 
+                _spriteBatch.Draw(P1BarTexture, p1BarLocation, Color.White);
+                _spriteBatch.Draw(P2BarTexture, p2BarLocation, Color.White);
                 _spriteBatch.Draw(ballTexture, ballRect, Color.White);
             }
 

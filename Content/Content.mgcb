@@ -59,6 +59,18 @@
 /processorParam:TextureFormat=Color
 /build:mid Background.png
 
+#begin outro Backround.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:outro Backround.png
+
 #begin P1 Bar.png
 /importer:TextureImporter
 /processor:TextureProcessor
