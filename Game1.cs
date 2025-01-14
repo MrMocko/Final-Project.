@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Diagnostics;
 
 namespace Final_Project_
 {
@@ -18,6 +20,8 @@ namespace Final_Project_
         }
 
         Screen screen;
+
+        SoundEffect gameMusic;
 
         Texture2D introBackround;
         Texture2D midBackround;
@@ -44,13 +48,15 @@ namespace Final_Project_
         Vector2 ballSpeed;
 
         SpriteFont fadeFont;
+        SpriteFont gameFont;
 
         int P1points = 0;
         int P2points = 0;
 
         KeyboardState keyboardState;
 
-
+        Vector2 P1Speed;
+        Vector2 P2Speed;
 
 
 
@@ -77,6 +83,8 @@ namespace Final_Project_
             ballRect = new Rectangle(240, 320, 30, 30);
             P2BarLocation = new Rectangle(50, 150, 10, 120);
             P1BarLocation = new Rectangle(740, 340, 10, 120);
+            P1Speed = Vector2.Zero;
+            P2Speed = Vector2.Zero;
 
             ballSpeed = new Vector2(4, 8);
 
@@ -97,6 +105,8 @@ namespace Final_Project_
             fadeFont = Content.Load<SpriteFont>("fade Font");
             ballTexture = Content.Load<Texture2D>("ball");
             outroBackround = Content.Load<Texture2D>("outro Backround");
+            gameFont = Content.Load<SpriteFont>("game Font");
+            gameMusic = Content.Load<SoundEffect>("game Music");
         }
 
         protected override void Update(GameTime gameTime)
@@ -106,6 +116,7 @@ namespace Final_Project_
             prevMousestate = mouseState;
             mouseState = Mouse.GetState();
             keyboardState = Keyboard.GetState();
+            this.Window.Title = $"x = {mouseState.X}, y = {mouseState.Y}";
 
             // INTRO
             if (screen == Screen.Intro)
@@ -128,28 +139,36 @@ namespace Final_Project_
             // MID
             else if (screen == Screen.mid)
             {
-                
+                P1Speed = Vector2.Zero;
+                P2Speed = Vector2.Zero;
+
                 if (keyboardState.IsKeyDown(Keys.Up))
                 {
-                    P1BarLocation.Y -= 5;
+                    P1Speed.Y -= 5;
                 }
                 if (keyboardState.IsKeyDown(Keys.Down))
                 {
-                    P1BarLocation.Y += 5;
+                    P1Speed.Y += 5;
                 }
                 if (keyboardState.IsKeyDown(Keys.W))
                 {
-                    P2BarLocation.Y -= 5;
+                    P2Speed.Y -= 5;
                 }
                 if (keyboardState.IsKeyDown(Keys.S))
                 {
-                    P2BarLocation.Y += 5;
+                    P2Speed.Y += 5;
                 }
+
+                P1BarLocation.Offset(P1Speed);
+                P2BarLocation.Offset(P2Speed);
+
                 ballRect.X += (int)ballSpeed.X;
                 if (ballRect.Intersects(P2BarLocation) || ballRect.Intersects(P1BarLocation))
                 {
                     ballSpeed.X *= -1;
                     ballRect.X += (int)ballSpeed.X;
+
+
 
                 }
 
@@ -158,7 +177,11 @@ namespace Final_Project_
                 {
                     ballSpeed.Y *= -1;
                     ballRect.Y += (int)ballSpeed.Y;
+                    if (ballRect.Intersects(P1BarLocation))
+                        ballRect.Y -= (int)P1Speed.Y;
 
+                    if (ballRect.Intersects(P2BarLocation))
+                        ballRect.Y -= (int)P2Speed.Y;
 
                 }
                 if (ballRect.Right > window.Width || ballRect.Left < 0)
@@ -209,7 +232,8 @@ namespace Final_Project_
             if (screen == Screen.mid)
             {
                 _spriteBatch.Draw(midBackround, new Vector2 (0,0), Color.White);
-                _spriteBatch.DrawString(fadeFont, "", new Vector2(230, 190), Color.Red);
+                _spriteBatch.DrawString(fadeFont, $"Player 1 {P1points}", new Vector2(200, 190), Color.Red);
+                _spriteBatch.DrawString(gameFont, $"Player 2 {P2points}", new Vector2(230, 190), Color.LightGreen);
                 _spriteBatch.Draw(P1BarTexture, P2BarLocation, Color.White);
                 _spriteBatch.Draw(P2BarTexture, P1BarLocation, Color.White);
                 _spriteBatch.Draw(ballTexture, ballRect, Color.White);

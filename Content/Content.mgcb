@@ -35,6 +35,15 @@
 #begin fade Font.ttf
 /copy:fade Font.ttf
 
+#begin game Font.ttf
+/copy:game Font.ttf
+
+#begin game-music.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:game-music.mp3
+
 #begin intro Backround (2).png
 /importer:TextureImporter
 /processor:TextureProcessor
