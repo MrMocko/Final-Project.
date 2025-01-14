@@ -35,6 +35,13 @@
 #begin fade Font.ttf
 /copy:fade Font.ttf
 
+#begin game Font.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:game Font.spritefont
+
 #begin game Font.ttf
 /copy:game Font.ttf
 

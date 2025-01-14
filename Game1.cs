@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using System.Diagnostics;
 
 namespace Final_Project_
@@ -21,7 +22,7 @@ namespace Final_Project_
 
         Screen screen;
 
-        SoundEffect gameMusic;
+        Song gameMusic;
 
         Texture2D introBackround;
         Texture2D midBackround;
@@ -90,6 +91,8 @@ namespace Final_Project_
 
 
             base.Initialize();
+
+            MediaPlayer.Play(gameMusic);
         }
 
         protected override void LoadContent()
@@ -106,7 +109,7 @@ namespace Final_Project_
             ballTexture = Content.Load<Texture2D>("ball");
             outroBackround = Content.Load<Texture2D>("outro Backround");
             gameFont = Content.Load<SpriteFont>("game Font");
-            gameMusic = Content.Load<SoundEffect>("game Music");
+            gameMusic = Content.Load<Song>("game-Music");
         }
 
         protected override void Update(GameTime gameTime)
