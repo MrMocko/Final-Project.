@@ -60,9 +60,6 @@ namespace Final_Project_
         Texture2D barrier4Texture;
         Rectangle barrier4Rect;
 
-        Texture2D helprTexture;
-        Rectangle helprRect;
-
         SpriteFont fadeFont;
         SpriteFont gameFont;
 
@@ -104,8 +101,7 @@ namespace Final_Project_
             barrierRect = new Rectangle(0, 1, 30, 600);
             barrier2Rect = new Rectangle(0, 1, 800, 45);
             barrier3Rect = new Rectangle(770, 1, 30, 600);
-            barrier4Rect = new Rectangle(0, 1, 30, 600);
-            helprRect = new Rectangle(0, 1, 100, 45);
+            barrier4Rect = new Rectangle(0, 560, 800, 40);
 
 
             ballSpeed = new Vector2(4, 8);
@@ -132,7 +128,6 @@ namespace Final_Project_
             gameFont = Content.Load<SpriteFont>("game Font");
             gameMusic = Content.Load<Song>("game-Music");
             barrierTexture = Content.Load<Texture2D>("barrier");
-            helprTexture = Content.Load<Texture2D>("helpr");
         }
 
         protected override void Update(GameTime gameTime)
@@ -219,6 +214,8 @@ namespace Final_Project_
                 // BARRIER 1
                 if (ballRect.Intersects(barrierRect))
                 {
+                    P2points += 1;
+
                     ballSpeed.X *= -1;
                     ballRect.X += (int)ballSpeed.X;
 
@@ -248,6 +245,8 @@ namespace Final_Project_
                 // BARRIER 3
                 if (ballRect.Intersects(barrier3Rect))
                 {
+                    P1points += 1;
+
                     ballSpeed.X *= -1;
                     ballRect.X += (int)ballSpeed.X;
 
@@ -255,27 +254,24 @@ namespace Final_Project_
 
                 }
                 // BARRIER 4
-                
+                if (ballRect.Intersects(barrier4Rect))
+                {
+                    ballSpeed.Y *= -1;
+                    ballRect.Y += (int)ballSpeed.Y;
+                    if (ballRect.Intersects(barrier4Rect))
+                        ballRect.Y -= (int)P1Speed.Y;
 
+                    if (ballRect.Intersects(barrier4Rect))
+                        ballRect.Y -= (int)P2Speed.Y;
+
+                }
                 // POINT SYSTEM
-                if (ballRect.X <= 0)
-                {
-                    P1points = 1;
-                    
-                }
-                if (ballRect.X < 0)
-                {
-                    P2points = 1;
-                }
-                if (P1points == 5)
+               
+                if (P1points == 5 || P2points == 5)
                 {
                     screen = Screen.Outro;
                 }
-                if (P2points == 5)
-                {
-                    screen = Screen.Outro;
-                }
-
+                
             }
 
 
@@ -307,14 +303,22 @@ namespace Final_Project_
                 _spriteBatch.Draw(P2BarTexture, P1BarLocation, Color.White);
                 _spriteBatch.Draw(ballTexture, ballRect, Color.White);
                 _spriteBatch.Draw(barrierTexture, barrierRect, Color.White);
-                _spriteBatch.Draw(helprTexture, helprRect, Color.White);
             }
             // OUTRO SCREEN
-            //if (screen == Screen.Outro)
-            //{
-            //    if ()
-            //    _spriteBatch.DrawString(fadeFont, "", new Vector2(230, 190), Color.Red);
-            //}
+            if (screen == Screen.Outro)
+            {
+                if (P1points == 5)
+                {
+                    _spriteBatch.DrawString(fadeFont, "CONGRADULATIONS PLAYER 1 YOU WIN!", new Vector2(230, 190), Color.Red);
+                }
+            }
+            if (screen == Screen.Outro)
+            {
+                if (P2points == 5)
+                {
+                    _spriteBatch.DrawString(fadeFont, "CONGRADULATIONS PLAYER 2 YOU WIN!", new Vector2(230, 190), Color.Red);
+                }
+            }
 
 
 
