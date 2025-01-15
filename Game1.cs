@@ -48,6 +48,21 @@ namespace Final_Project_
         Rectangle ballRect;
         Vector2 ballSpeed;
 
+        Texture2D barrierTexture;
+        Rectangle barrierRect;
+
+        Texture2D barrier2Texture;
+        Rectangle barrier2Rect;
+
+        Texture2D barrier3Texture;
+        Rectangle barrier3Rect;
+
+        Texture2D barrier4Texture;
+        Rectangle barrier4Rect;
+
+        Texture2D helprTexture;
+        Rectangle helprRect;
+
         SpriteFont fadeFont;
         SpriteFont gameFont;
 
@@ -86,6 +101,12 @@ namespace Final_Project_
             P1BarLocation = new Rectangle(740, 340, 10, 120);
             P1Speed = Vector2.Zero;
             P2Speed = Vector2.Zero;
+            barrierRect = new Rectangle(0, 1, 30, 600);
+            barrier2Rect = new Rectangle(0, 1, 800, 45);
+            barrier3Rect = new Rectangle(770, 1, 30, 600);
+            barrier4Rect = new Rectangle(0, 1, 30, 600);
+            helprRect = new Rectangle(0, 1, 100, 45);
+
 
             ballSpeed = new Vector2(4, 8);
 
@@ -110,6 +131,8 @@ namespace Final_Project_
             outroBackround = Content.Load<Texture2D>("outro Backround");
             gameFont = Content.Load<SpriteFont>("game Font");
             gameMusic = Content.Load<Song>("game-Music");
+            barrierTexture = Content.Load<Texture2D>("barrier");
+            helprTexture = Content.Load<Texture2D>("helpr");
         }
 
         protected override void Update(GameTime gameTime)
@@ -130,7 +153,7 @@ namespace Final_Project_
                     if (strtButtonRect.Contains(mouseState.Position))
                     {
                         screen = Screen.mid;
-
+                        //IsMouseVisible = false;
                     }
 
                 }
@@ -142,6 +165,7 @@ namespace Final_Project_
             // MID
             else if (screen == Screen.mid)
             {
+                // BAR SPEED
                 P1Speed = Vector2.Zero;
                 P2Speed = Vector2.Zero;
 
@@ -161,7 +185,7 @@ namespace Final_Project_
                 {
                     P2Speed.Y += 5;
                 }
-
+                // COLLISION
                 P1BarLocation.Offset(P1Speed);
                 P2BarLocation.Offset(P2Speed);
 
@@ -191,11 +215,53 @@ namespace Final_Project_
                     ballSpeed.X *= -1;
                 if (ballRect.Bottom > window.Height || ballRect.Top < 0)
                     ballSpeed.Y *= -1;
+
+                // BARRIER 1
+                if (ballRect.Intersects(barrierRect))
+                {
+                    ballSpeed.X *= -1;
+                    ballRect.X += (int)ballSpeed.X;
+
+
+
+                }
+                if (ballRect.Intersects(barrierRect))
+                {
+                    ballSpeed.Y *= -1;
+                    ballRect.Y += (int)ballSpeed.Y;
+                    if (ballRect.Intersects(barrierRect))
+                        ballRect.Y -= (int)P1Speed.Y;
+
+                }
+                // BARRIER 2 
+                if (ballRect.Intersects(barrier2Rect))
+                {
+                    ballSpeed.Y *= -1;
+                    ballRect.Y += (int)ballSpeed.Y;
+                    if (ballRect.Intersects(barrier2Rect))
+                        ballRect.Y -= (int)P1Speed.Y;
+
+                    if (ballRect.Intersects(barrier2Rect))
+                        ballRect.Y -= (int)P2Speed.Y;
+
+                }
+                // BARRIER 3
+                if (ballRect.Intersects(barrier3Rect))
+                {
+                    ballSpeed.X *= -1;
+                    ballRect.X += (int)ballSpeed.X;
+
+
+
+                }
+                // BARRIER 4
                 
+
+                // POINT SYSTEM
                 if (ballRect.X <= 0)
                 {
                     P1points = 1;
-                    ;
+                    
                 }
                 if (ballRect.X < 0)
                 {
@@ -209,7 +275,7 @@ namespace Final_Project_
                 {
                     screen = Screen.Outro;
                 }
-                
+
             }
 
 
@@ -235,11 +301,13 @@ namespace Final_Project_
             if (screen == Screen.mid)
             {
                 _spriteBatch.Draw(midBackround, new Vector2 (0,0), Color.White);
-                _spriteBatch.DrawString(fadeFont, $"Player 1 {P1points}", new Vector2(200, 190), Color.Red);
-                _spriteBatch.DrawString(gameFont, $"Player 2 {P2points}", new Vector2(230, 190), Color.LightGreen);
+                _spriteBatch.DrawString(gameFont, $"Player 1 : {P1points}", new Vector2(200, 55), Color.White);
+                _spriteBatch.DrawString(gameFont, $"Player 2 : {P2points}", new Vector2(400, 55), Color.White);
                 _spriteBatch.Draw(P1BarTexture, P2BarLocation, Color.White);
                 _spriteBatch.Draw(P2BarTexture, P1BarLocation, Color.White);
                 _spriteBatch.Draw(ballTexture, ballRect, Color.White);
+                _spriteBatch.Draw(barrierTexture, barrierRect, Color.White);
+                _spriteBatch.Draw(helprTexture, helprRect, Color.White);
             }
             // OUTRO SCREEN
             //if (screen == Screen.Outro)
