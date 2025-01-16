@@ -270,30 +270,18 @@ namespace Final_Project_
 
                 }
                 // P1 & P2 BAR COLLISION
-                if (P1BarLocation.Intersects(barrier2Rect) || P1BarLocation.Intersects(barrier4Rect)) 
+                if (P1BarLocation.Top < barrier2Rect.Bottom)
                 {
-                    if (keyboardState.IsKeyDown(Keys.Up))
-                    {
-                        P1Speed.Y -= 0;
-                    }
-                    if (keyboardState.IsKeyDown(Keys.Down))
-                    {
-                        P1Speed.Y -= 0;
-                    }
+                    P1BarLocation.Y = barrier2Rect.Bottom;
                 }
-                if (P2BarLocation.Intersects(barrier2Rect) || P1BarLocation.Intersects (barrier4Rect))
+                if (P2BarLocation.Top < barrier2Rect.Bottom)
                 {
-                    if (keyboardState.IsKeyDown(Keys.W))
-                    {
-                        P2Speed.Y -= 0;
-                    }
-                    if (keyboardState.IsKeyDown(Keys.S))
-                    {
-                        P2Speed.Y += 0;
-                    }
+                    P2BarLocation.Y = barrier2Rect.Bottom;
                 }
+
+
                 // POINT SYSTEM
-               
+
                 if (P1points == 5 || P2points == 5)
                 {
                     screen = Screen.Outro;
