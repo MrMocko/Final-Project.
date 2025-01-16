@@ -32,17 +32,18 @@ namespace Final_Project_
 
         Texture2D P2BarTexture;
         Rectangle P2BarLocation;
-        //Rectangle P1BarRect;
 
         Texture2D P1BarTexture;
         Rectangle P1BarLocation;
-        //Rectangle P2BarRect;
 
         MouseState prevMousestate;
         MouseState mouseState;
 
         Texture2D strtButtonTexture;
         Rectangle strtButtonRect;
+
+        Texture2D extButtonTexture;
+        Rectangle extButtonRect;
 
         Texture2D ballTexture;
         Rectangle ballRect;
@@ -89,10 +90,8 @@ namespace Final_Project_
             _graphics.PreferredBackBufferWidth = window.Width;
             _graphics.PreferredBackBufferHeight = window.Height;
             _graphics.ApplyChanges();
-
-            //P1BarRect = new Rectangle(740, 340, 10, 120);
-            //P2BarRect = new Rectangle(50, 150, 10, 120);
             strtButtonRect = new Rectangle(240, 320, 320, 120);
+            extButtonRect = new Rectangle (590, 510, 200, 80);
             ballRect = new Rectangle(240, 320, 30, 30);
             P2BarLocation = new Rectangle(50, 150, 10, 120);
             P1BarLocation = new Rectangle(740, 340, 10, 120);
@@ -122,6 +121,7 @@ namespace Final_Project_
             midBackround = Content.Load<Texture2D>("mid Background");
             outroBackround = Content.Load<Texture2D>("outro Backround");
             strtButtonTexture = Content.Load<Texture2D>("strt Button");
+            extButtonTexture = Content.Load<Texture2D>("ext Button");
             fadeFont = Content.Load<SpriteFont>("fade Font");
             ballTexture = Content.Load<Texture2D>("ball");
             outroBackround = Content.Load<Texture2D>("outro Backround");
@@ -139,6 +139,12 @@ namespace Final_Project_
             keyboardState = Keyboard.GetState();
             this.Window.Title = $"x = {mouseState.X}, y = {mouseState.Y}";
 
+            //if (MediaPlayer.MediaState == MediaState.Stopped)
+            //{
+            //    MediaPlayer.Play(gameMusic);
+            //}
+
+
             // INTRO
             if (screen == Screen.Intro)
             {
@@ -148,7 +154,7 @@ namespace Final_Project_
                     if (strtButtonRect.Contains(mouseState.Position))
                     {
                         screen = Screen.mid;
-                        //IsMouseVisible = false;
+                        IsMouseVisible = false;
                     }
 
                 }
@@ -250,8 +256,6 @@ namespace Final_Project_
                     ballSpeed.X *= -1;
                     ballRect.X += (int)ballSpeed.X;
 
-
-
                 }
                 // BARRIER 4
                 if (ballRect.Intersects(barrier4Rect))
@@ -264,6 +268,29 @@ namespace Final_Project_
                     if (ballRect.Intersects(barrier4Rect))
                         ballRect.Y -= (int)P2Speed.Y;
 
+                }
+                // P1 & P2 BAR COLLISION
+                if (P1BarLocation.Intersects(barrier2Rect) || P1BarLocation.Intersects(barrier4Rect)) 
+                {
+                    if (keyboardState.IsKeyDown(Keys.Up))
+                    {
+                        P1Speed.Y -= 0;
+                    }
+                    if (keyboardState.IsKeyDown(Keys.Down))
+                    {
+                        P1Speed.Y -= 0;
+                    }
+                }
+                if (P2BarLocation.Intersects(barrier2Rect) || P1BarLocation.Intersects (barrier4Rect))
+                {
+                    if (keyboardState.IsKeyDown(Keys.W))
+                    {
+                        P2Speed.Y -= 0;
+                    }
+                    if (keyboardState.IsKeyDown(Keys.S))
+                    {
+                        P2Speed.Y += 0;
+                    }
                 }
                 // POINT SYSTEM
                
@@ -278,7 +305,23 @@ namespace Final_Project_
             // OUTRO
             else if (screen == Screen.Outro)
             {
+                IsMouseVisible = true;
+                if (screen == Screen.Outro)
+                {
+                    if (mouseState.LeftButton == ButtonState.Pressed && prevMousestate.LeftButton == ButtonState.Released)
+                    {
 
+                        if (extButtonRect.Contains(mouseState.Position))
+                        {
+                            Exit();
+                            
+                        }
+
+                    }
+
+
+
+                }
             }
         }
         protected override void Draw(GameTime gameTime)
@@ -291,14 +334,14 @@ namespace Final_Project_
             {
                 _spriteBatch.Draw(introBackround, new Vector2(0, 0), Color.White);
                 _spriteBatch.Draw(strtButtonTexture, strtButtonRect, Color.White);
-                _spriteBatch.DrawString(fadeFont, "PONG", new Vector2(230, 190), Color.Red);
+                _spriteBatch.DrawString(fadeFont, "PONG", new Vector2(270, 190), Color.Red);
             }
             //MID SCREEN
             if (screen == Screen.mid)
             {
                 _spriteBatch.Draw(midBackround, new Vector2 (0,0), Color.White);
-                _spriteBatch.DrawString(gameFont, $"Player 1 : {P1points}", new Vector2(200, 55), Color.White);
-                _spriteBatch.DrawString(gameFont, $"Player 2 : {P2points}", new Vector2(400, 55), Color.White);
+                _spriteBatch.DrawString(gameFont, $"Player 1: {P1points}", new Vector2(120, 55), Color.White);
+                _spriteBatch.DrawString(gameFont, $"Player 2: {P2points}", new Vector2(460, 55), Color.White);
                 _spriteBatch.Draw(P1BarTexture, P2BarLocation, Color.White);
                 _spriteBatch.Draw(P2BarTexture, P1BarLocation, Color.White);
                 _spriteBatch.Draw(ballTexture, ballRect, Color.White);
@@ -307,23 +350,29 @@ namespace Final_Project_
             // OUTRO SCREEN
             if (screen == Screen.Outro)
             {
+                _spriteBatch.Draw(outroBackround, new Vector2(0, 0), Color.White);
+                _spriteBatch.Draw(extButtonTexture, extButtonRect, Color.White);
+            }
+            if (screen == Screen.Outro)
+            {
                 if (P1points == 5)
                 {
-                    _spriteBatch.DrawString(fadeFont, "CONGRADULATIONS PLAYER 1 YOU WIN!", new Vector2(230, 190), Color.Red);
+                    _spriteBatch.DrawString(fadeFont, "GOOD JOB PLAYER 1 \n         YOU WIN!", new Vector2(35, 190), Color.LightGreen, 0, Vector2.Zero, 0.7f, SpriteEffects.None, 0);
                 }
             }
             if (screen == Screen.Outro)
             {
                 if (P2points == 5)
                 {
-                    _spriteBatch.DrawString(fadeFont, "CONGRADULATIONS PLAYER 2 YOU WIN!", new Vector2(230, 190), Color.Red);
+                    _spriteBatch.DrawString(fadeFont, "GOOD JOB PLAYER 2 \n         YOU WIN!", new Vector2(35, 190), Color.Red, 0, Vector2.Zero, 0.7f, SpriteEffects.None, 0);
                 }
             }
+            
 
 
 
 
-                _spriteBatch.End();
+            _spriteBatch.End();
 
             base.Draw(gameTime);
         }
