@@ -278,6 +278,14 @@ namespace Final_Project_
                 {
                     P2BarLocation.Y = barrier2Rect.Bottom;
                 }
+                if (P1BarLocation.Intersects(barrier4Rect))
+                {
+                    P1BarLocation.Y = barrier4Rect.Y - P1BarLocation.Height;
+                }
+                if (P2BarLocation.Intersects(barrier4Rect))
+                {
+                    P2BarLocation.Y = barrier4Rect.Y - P2BarLocation.Height;
+                }
 
 
                 // POINT SYSTEM
@@ -286,6 +294,16 @@ namespace Final_Project_
                 {
                     screen = Screen.Outro;
                 }
+                
+                // POWER-UPS
+                if (P1points >= 1)
+                {
+                    if (keyboardState.IsKeyDown(Keys.Q))
+                    {
+                        ballSpeed.Y += 6;
+                    }
+                }
+                
                 
             }
 
