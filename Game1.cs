@@ -149,10 +149,6 @@ namespace Final_Project_
             keyboardState = Keyboard.GetState();
             this.Window.Title = $"x = {mouseState.X}, y = {mouseState.Y}";
 
-            //if (MediaPlayer.MediaState == MediaState.Stopped)
-            //{
-            //    MediaPlayer.Play(gameMusic);
-            //}
 
 
             // INTRO
@@ -309,10 +305,10 @@ namespace Final_Project_
                 // POWER-UPS
                 if (P1points >= 1 && P1points <= 3 && keyboardState.IsKeyDown(Keys.Q) && !isPowerUpActive)
                 {
-                        isPowerUpActive = true;
-                        powerUpTimer = 3f;
-                        originalSpeedY = ballSpeed.Y;
-                        ballSpeed.Y += 8;
+                    isPowerUpActive = true;
+                    powerUpTimer = 3f;
+                    originalSpeedY = ballSpeed.Y;
+                    ballSpeed.Y *= 2;
                 }
                 if (isPowerUpActive)
                 {
@@ -328,7 +324,7 @@ namespace Final_Project_
                     isPowerUpActive = true;
                     powerUpTimer = 3f;
                     originalSpeedY = ballSpeed.Y;
-                    ballSpeed.Y += 8;
+                    ballSpeed.Y *= 2;
                 }
                 if (isPowerUpActive)
                 {
@@ -341,6 +337,9 @@ namespace Final_Project_
                 }
 
             }
+            // RESET BALL 
+
+            if (P1point || P2points = 1)
 
 
             // OUTRO
