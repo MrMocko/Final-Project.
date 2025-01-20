@@ -19,6 +19,9 @@ namespace Final_Project_
             mid,
             Outro,
         }
+        float powerUpTimer = 0;
+        bool isPowerUpActive = false;
+        float originalSpeedY;
 
         Screen screen;
 
@@ -27,6 +30,8 @@ namespace Final_Project_
         Texture2D introBackround;
         Texture2D midBackround;
         Texture2D outroBackround;
+        Texture2D rulesBox;
+        Rectangle rulesBOX;
 
         Rectangle window;
 
@@ -41,6 +46,9 @@ namespace Final_Project_
 
         Texture2D strtButtonTexture;
         Rectangle strtButtonRect;
+
+        Texture2D infoButton;
+        Rectangle infoButtonRect;
 
         Texture2D extButtonTexture;
         Rectangle extButtonRect;
@@ -91,6 +99,7 @@ namespace Final_Project_
             _graphics.PreferredBackBufferHeight = window.Height;
             _graphics.ApplyChanges();
             strtButtonRect = new Rectangle(240, 320, 320, 120);
+            rulesBOX = new Rectangle(240, 320, 320, 120);
             extButtonRect = new Rectangle (590, 510, 200, 80);
             ballRect = new Rectangle(240, 320, 30, 30);
             P2BarLocation = new Rectangle(50, 150, 10, 120);
@@ -128,6 +137,7 @@ namespace Final_Project_
             gameFont = Content.Load<SpriteFont>("game Font");
             gameMusic = Content.Load<Song>("game-Music");
             barrierTexture = Content.Load<Texture2D>("barrier");
+            rulesBox = Content.Load<Texture2D>("rules Box");
         }
 
         protected override void Update(GameTime gameTime)
@@ -148,6 +158,7 @@ namespace Final_Project_
             // INTRO
             if (screen == Screen.Intro)
             {
+
                 if (mouseState.LeftButton == ButtonState.Pressed && prevMousestate.LeftButton == ButtonState.Released)
                 {
 
@@ -296,15 +307,39 @@ namespace Final_Project_
                 }
                 
                 // POWER-UPS
-                if (P1points >= 1)
+                if (P1points >= 1 && P1points <= 3 && keyboardState.IsKeyDown(Keys.Q) && !isPowerUpActive)
                 {
-                    if (keyboardState.IsKeyDown(Keys.Q))
+                        isPowerUpActive = true;
+                        powerUpTimer = 3f;
+                        originalSpeedY = ballSpeed.Y;
+                        ballSpeed.Y += 8;
+                }
+                if (isPowerUpActive)
+                {
+                    powerUpTimer -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    if (powerUpTimer <= 0)
                     {
-                        ballSpeed.Y += 6;
+                        ballSpeed.Y = originalSpeedY;
+                        isPowerUpActive = false;
                     }
                 }
-                
-                
+                if (P2points >= 1 && P2points <= 3 && keyboardState.IsKeyDown(Keys.Left) && !isPowerUpActive)
+                {
+                    isPowerUpActive = true;
+                    powerUpTimer = 3f;
+                    originalSpeedY = ballSpeed.Y;
+                    ballSpeed.Y += 8;
+                }
+                if (isPowerUpActive)
+                {
+                    powerUpTimer -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    if (powerUpTimer <= 0)
+                    {
+                        ballSpeed.Y = originalSpeedY;
+                        isPowerUpActive = false;
+                    }
+                }
+
             }
 
 
